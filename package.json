@@ -26,6 +26,7 @@
     "pre-commit": "pnpm nano-staged"
   },
   "devDependencies": {
+    "@types/node": "20",
     "eslint": "^8.57.0",
     "eslint-config-foxkit": "4.1.0",
     "eslint-config-prettier": "^9.1.0",
@@ -35,6 +36,8 @@
     "typescript": "5.5.4"
   },
   "dependencies": {
+    "@foxkit/list": "^1.2.0",
+    "@foxkit/node-util": "^0.6.0",
     "tsx": "^4.19.0"
   }
 }
