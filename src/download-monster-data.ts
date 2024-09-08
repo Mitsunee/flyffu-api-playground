@@ -1,7 +1,8 @@
 import fs from "fs/promises";
 import { isDirectory, isFile, readFile, writeFile } from "@foxkit/node-util/fs";
-import { sleep } from "./utils/sleep";
 import { List } from "@foxkit/list";
+import { sleep } from "./utils/sleep";
+import { API, DATA_DIR, PATHS } from "./paths";
 
 const [, , ...args] = process.argv;
 const isForced = args.includes("--force");
@@ -9,21 +10,17 @@ const monsterData = new Map<number, MonsterData>();
 const knownSkills = new Set<number>();
 
 async function setupDirs() {
-  if (!(await isDirectory("data"))) {
-    await fs.mkdir("data");
-  }
+  const dirs = [DATA_DIR, PATHS.monsters, PATHS.monsterSkills];
 
-  if (!(await isDirectory("data/monsters"))) {
-    await fs.mkdir("data/monsters");
-  }
-
-  if (!(await isDirectory("data/monsters/skills"))) {
-    await fs.mkdir("data/monsters/skills");
+  for (const dir of dirs) {
+    if (!(await isDirectory(dir))) {
+      await fs.mkdir(dir);
+    }
   }
 }
 
 async function fetchMonsterList(): Promise<Array<number>> {
-  const res = await fetch("https://api.flyff.com/monster");
+  const res = await fetch(API.monstersList);
   if (!res.ok) {
     throw new Error(`Failed to fetch Monster list: ${res.statusText}`);
   }
@@ -34,7 +31,7 @@ async function fetchMonsterList(): Promise<Array<number>> {
 }
 
 async function fetchMonsterData(id: number) {
-  const res = await fetch(`https://api.flyff.com/monster/${id}`);
+  const res = await fetch(API.monster(id));
   if (!res.ok) {
     throw new Error(
       `Failed to fetch Monster data for id ${id}: ${res.statusText}`
@@ -47,7 +44,7 @@ async function fetchMonsterData(id: number) {
 }
 
 async function fetchSkillData(id: number) {
-  const res = await fetch(`https://api.flyff.com/skill/${id}`);
+  const res = await fetch(API.skill(id));
   if (!res.ok) {
     throw new Error(
       `Failed to fetch Skill data for id ${id}: ${res.statusText}`
@@ -63,13 +60,12 @@ async function downloadMonsterData(list: Array<number>) {
   const queue = new List(list);
   let id: number | undefined;
   while ((id = queue.shift())) {
-    if (!isForced && (await isFile(`data/monsters/${id}.json`))) {
+    const filePath = PATHS.monster(id);
+    if (!isForced && (await isFile(filePath))) {
       console.log(`[SKIP] Already have monster data for id ${id}`);
-      const content = await readFile(`data/monsters/${id}.json`);
+      const content = await readFile(filePath);
       if (!content) {
-        throw new Error(
-          `[ERROR] Could not read file 'data/monsters/${id}.json'`
-        );
+        throw new Error(`[ERROR] Could not read file '${filePath}'`);
       }
       const data = JSON.parse(content);
       monsterData.set(id, data);
@@ -78,7 +74,7 @@ async function downloadMonsterData(list: Array<number>) {
 
     console.log(`[LOG] Fetching monster data for id ${id}`);
     const data = await fetchMonsterData(id);
-    await writeFile(`data/monsters/${id}.json`, data);
+    await writeFile(filePath, data);
     monsterData.set(id, JSON.parse(data));
     console.log(`[DONE] Completed download of monster data for id ${id}`);
   }
@@ -99,13 +95,15 @@ async function downloadMonsterSkillsData() {
         continue;
       }
 
-      if (!isForced && (await isFile(`data/monsters/skills/${id}.json`))) {
+      const filePath = PATHS.monsterSkill(id);
+
+      if (!isForced && (await isFile(filePath))) {
         console.log(`[SKIP] Already have skill data for id ${id}`);
         continue;
       }
 
       const data = await fetchSkillData(id);
-      await writeFile(`data/monsters/skills/${id}.json`, data);
+      await writeFile(filePath, data);
       knownSkills.add(id);
       console.log(`[DONE] Completed download of skill data for id ${id}`);
     }
