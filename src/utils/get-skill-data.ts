@@ -7,7 +7,7 @@ const cache = new Map<number, MonsterSkill>();
  * @param id Monster Skill Id
  * @returns Data of Monster Skill
  */
-export async function getMonsterData(id: number): Promise<MonsterSkill> {
+export async function getMonsterSkillData(id: number): Promise<MonsterSkill> {
   const cached = cache.get(id);
   if (cached) return cached;
 
