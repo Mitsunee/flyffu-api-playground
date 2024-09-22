@@ -2,7 +2,7 @@
 
 This repository is my personal playground for doing stuff with the [Flyff Universe API](https://api.flyff.com) provided by the game's publisher.
 
-<center><img src="./.github/banner.jpeg" width="640" height="320" alt="Flyff Universe"></center>
+<p align="center"><img src="./.github/banner.jpeg" width="640" height="320" alt="Flyff Universe"></p>
 
 ## Usage
 
