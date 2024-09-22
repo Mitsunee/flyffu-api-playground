@@ -9,8 +9,9 @@ export const API = {
 export const DATA_DIR = "data";
 
 export const PATHS = {
-  monsters: `${DATA_DIR}/monsters`,
-  monster: (id: number) => `${DATA_DIR}/monsters/${id}.json`,
-  monsterSkills: `${DATA_DIR}/monsters/skills`,
-  monsterSkill: (id: number) => `${DATA_DIR}/monsters/skills/${id}.json`
+  monsters: `${DATA_DIR}/monster`,
+  monster: (id: number) => `${DATA_DIR}/monster/${id}.json`,
+  monsterList: `${DATA_DIR}/monsters.json`,
+  monsterSkills: `${DATA_DIR}/monster/skill`,
+  monsterSkill: (id: number) => `${DATA_DIR}/monster/skill/${id}.json`
 } as const;

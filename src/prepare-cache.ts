@@ -121,9 +121,9 @@ async function main() {
   const list = await fetchMonsterList();
   console.log(`Found ${list.length} Monster IDs`);
 
+  await writeFile(PATHS.monsterList, JSON.stringify(list));
   await downloadMonsterData(list);
   await downloadMonsterSkillsData();
-  // TODO: global constants for paths such as data/monsters/*.json
 }
 
 main()
