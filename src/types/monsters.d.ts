@@ -72,46 +72,23 @@ interface MonsterData {
   icon: string;
   flying: boolean;
   hp: number;
-  runaway?: boolean;
+  runaway: boolean;
   berserkThresholdHP?: number;
+  recoveryThresholdHP?: number;
   experienceTable: Array<number>;
   attacks: Array<MonsterAttack>;
 }
 
-type MonsterSkillAbilityAttribute =
-  | "rooting"
-  | "stun"
-  | "hitrate"
-  | "invisibility"
-  | "poison"
-  | "slow"
-  | "double"
-  | "bleeding"
-  | "silent"
-  | "counterattackdamage"
-  | "counterattack"
-  | "loot"
-  | "moonbeam"
-  | "hitrateandpoison"
-  | "hitrateandpoisonandstun"
-  | "lootandslow"
-  | "poisonandbleedingandmoonbeam"
-  | "stunandrooting"
-  | "forcedblock"
-  | "weaponbleeding"
-  | "weaponstun"
-  | "weaponpoison"
-  | "allstun"
-  | "allpoison";
-
 interface MonsterSkillAbility {
   parameter: string;
-  attribute?: MonsterSkillAbilityAttribute;
+  attribute?: string;
+  add?: number;
 }
 
 interface MonsterSkillLevel {
   duration?: number;
   abilities?: Array<MonsterSkillAbility>;
+  flybackPropability?: number;
 }
 
 /**
