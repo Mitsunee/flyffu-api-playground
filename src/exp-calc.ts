@@ -9,7 +9,8 @@ import { getMonsterList } from "./utils/get-monster-list";
 /**
  * How many monsters to display per level (-1 to show all)
  */
-const limitList = 5;
+// TEMP: unused
+//const limitList = 5;
 /**
  * Minimum player level that will be calculated (1-160)
  */
@@ -79,7 +80,7 @@ async function main() {
     monsters.sort((a, b) => a.level - b.level); // sort monster by lvl
     console.log(`\nFor level ${playerLv} found:`);
     monsters.forEach(monster =>
-      console.log(`- [${monster.level}] ${monster.name.en}`)
+      console.log(`- [${monster.id}] [${monster.level}] ${monster.name.en}`)
     );
   }
 }
