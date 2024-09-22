@@ -13,7 +13,13 @@ pnpm prepare-cache
 
 ## Scripts
 
-None available yet :)
+### Monster Search
+
+```
+pnpm tsx src/search-monster.ts
+```
+
+This script can be used to find Monsters by name. The script has flags to display or hide the id, level and rank in the result. see `--help` for more information.
 
 ## Cache
 
