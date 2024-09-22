@@ -2,6 +2,8 @@
 
 This repository is my personal playground for doing stuff with the [Flyff Universe API](https://api.flyff.com) provided by the game's publisher.
 
+<center><img src="./.github/banner.jpeg" width="640" height="320" alt="Flyff Universe"></center>
+
 ## Usage
 
 This repository is intended to be used with Node.js v18 and pnpm 9.x
