@@ -8,7 +8,11 @@
     "noEmit": true,
     "isolatedModules": true,
     "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"]
+    }
   },
   "include": ["**/*.ts", "src/types/**/*.d.ts"],
   "exclude": ["node_modules", "dist"]

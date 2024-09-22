@@ -1,8 +1,8 @@
 import fs from "fs/promises";
 import { isDirectory, isFile, readFile, writeFile } from "@foxkit/node-util/fs";
 import { List } from "@foxkit/list";
-import { sleep } from "./utils/sleep";
-import { API, DATA_DIR, PATHS } from "./paths";
+import { sleep } from "~/utils/sleep";
+import { API, DATA_DIR, PATHS } from "~/paths";
 
 const [, , ...args] = process.argv;
 const isForced = args.includes("--force");
