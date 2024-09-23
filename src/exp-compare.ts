@@ -106,7 +106,7 @@ async function main() {
       lang: monster.lang
     }));
 
-    if (isSorted) results.sort((a, b) => a.exp.expPerHp - b.exp.expPerHp);
+    if (isSorted) results.sort((a, b) => b.exp.expPerHp - a.exp.expPerHp);
     const bestVal = Math.max(...results.map(res => res.exp.expPerHp));
     const table = Object.fromEntries(
       results.map(result => {
