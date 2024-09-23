@@ -1,25 +1,9 @@
 import { getMonsterList } from "~/utils/get-monster-list";
-import { getMonsterData } from "~/utils/get-monster-data";
-import {
-  describeMonster,
-  type DescribeMonsterOpts
-} from "~/utils/describe-monster";
+import type { DescribeMonsterOpts } from "~/utils/describe-monster";
+import { describeMonster } from "~/utils/describe-monster";
+import { searchMonsterByName } from "./utils/search-monster";
 
 const [, , ...args] = process.argv;
-
-async function search(list: number[], query: string) {
-  const matches = new Array<{ data: MonsterData; lang: "en" | "de" }>();
-  for (const id of list) {
-    const data = await getMonsterData(id);
-    if (data.name.en.toLowerCase().includes(query)) {
-      matches.push({ data, lang: "en" });
-    } else if (data.name.de?.toLowerCase().includes(query)) {
-      matches.push({ data, lang: "de" });
-    }
-  }
-
-  return matches;
-}
 
 // prettier-ignore
 const HELP = 
@@ -89,7 +73,7 @@ async function main() {
   // handle searches
   for (const query of queries) {
     console.log(`Search query '${query}':`);
-    const results = await search(list, query);
+    const results = await searchMonsterByName(list, query);
     for (const result of results) {
       console.log(
         `- ${describeMonster(result.data, { ...opts, lang: result.lang })}`
