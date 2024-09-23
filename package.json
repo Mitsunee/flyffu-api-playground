@@ -16,7 +16,10 @@
     "lint": "eslint .",
     "lint:strict": "eslint --max-warnings 0 .",
     "typecheck": "tsc",
-    "prepare-cache": "tsx src/prepare-cache.ts"
+    "prepare-cache": "tsx src/prepare-cache.ts",
+    "search-monster": "tsx src/search-monster.ts",
+    "exp-compare": "tsx src/exp-compare.ts",
+    "exp-calc": "tsx src/exp-calc.ts"
   },
   "nano-staged": {
     "**/*.{js,cjs,mjs,ts,mts,cts,json,md,yaml}": [

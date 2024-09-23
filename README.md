@@ -20,7 +20,7 @@ All scripts have their own built-in help text accessible with `-h` or `--help`
 ### Monster Search
 
 ```
-pnpm tsx src/search-monster.ts
+pnpm search-monster
 ```
 
 This script can be used to find Monsters by name. The script has flags to display or hide the id, level and rank in the result. see `--help` for more information.
@@ -28,7 +28,7 @@ This script can be used to find Monsters by name. The script has flags to displa
 ### EXP Compare
 
 ```
-pnpm tsx src/exp-compare.ts
+pnpm exp-compare
 ```
 
 Compare the exp efficiency of a specified selection of monster for a given level range. Monsters are searched for with the same search method as Monster Search, but limited to Small, Normal and Captain overworld monsters.
@@ -36,7 +36,7 @@ Compare the exp efficiency of a specified selection of monster for a given level
 ### EXP Calculator (WIP)
 
 ```
-pnpm tsx src/exp-calc.ts
+pnpm exp-calc
 ```
 
 This script can be configured with a level range and filter function to determine the mobs for exp comparisons (similar to Exp Compare)
