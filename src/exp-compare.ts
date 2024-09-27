@@ -4,6 +4,7 @@ import { getMonsterData } from "./utils/get-monster-data";
 import { getMonsterList } from "./utils/get-monster-list";
 import { searchMonsterByName } from "./utils/search-monster";
 import { getMonsterExp } from "./utils/get-monster-exp";
+import { getMonsterWarnings } from "./utils/get-monster-warnings";
 
 interface CalcResult {
   data: MonsterData;
@@ -98,6 +99,12 @@ async function main() {
     );
   }
 
+  const warningsMap = new Map<MonsterData, string[]>();
+  for (const monster of monsters) {
+    const warnings = await getMonsterWarnings(monster.data);
+    warningsMap.set(monster.data, warnings);
+  }
+
   for (let lv = start; lv <= end; lv++) {
     console.log(`For level ${lv}`);
     const results: CalcResult[] = monsters.map(monster => ({
@@ -113,9 +120,11 @@ async function main() {
         const efficiency = +Number(
           100 * (result.exp.expPerHp / bestVal)
         ).toPrecision(4);
+        const warnings = warningsMap.get(result.data);
+
         return [
           result.data.name[result.lang],
-          { ...result.exp, efficiency }
+          { ...result.exp, efficiency, warnings }
         ] as const;
       })
     );
