@@ -8,9 +8,10 @@ const [, , ...args] = process.argv;
 const isForced = args.includes("--force");
 const monsterData = new Map<number, MonsterData>();
 const knownSkills = new Set<number>();
+const sleepDuration = 220;
 
 async function setupDirs() {
-  const dirs = [DATA_DIR, PATHS.monsters, PATHS.monsterSkills];
+  const dirs = [DATA_DIR, PATHS.monsters, PATHS.monsterSkills, PATHS.quests];
 
   for (const dir of dirs) {
     if (!(await isDirectory(dir))) {
@@ -25,7 +26,18 @@ async function fetchMonsterList(): Promise<Array<number>> {
     throw new Error(`Failed to fetch Monster list: ${res.statusText}`);
   }
 
-  await sleep(200);
+  await sleep(sleepDuration);
+
+  return res.json();
+}
+
+async function fetchQuestList(): Promise<Array<number>> {
+  const res = await fetch(API.questsList);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch Quest list: ${res.statusText}`);
+  }
+
+  await sleep(sleepDuration);
 
   return res.json();
 }
@@ -38,7 +50,7 @@ async function fetchMonsterData(id: number) {
     );
   }
 
-  await sleep(220);
+  await sleep(sleepDuration);
 
   return res.text();
 }
@@ -51,7 +63,20 @@ async function fetchSkillData(id: number) {
     );
   }
 
-  await sleep(220);
+  await sleep(sleepDuration);
+
+  return res.text();
+}
+
+async function fetchQuestData(id: number) {
+  const res = await fetch(API.quest(id));
+  if (!res.ok) {
+    throw new Error(
+      `Failed to fetch Quest data for id ${id}: ${res.statusText}`
+    );
+  }
+
+  await sleep(sleepDuration);
 
   return res.text();
 }
@@ -77,6 +102,23 @@ async function downloadMonsterData(list: Array<number>) {
     await writeFile(filePath, data);
     monsterData.set(id, JSON.parse(data));
     console.log(`[DONE] Completed download of monster data for id ${id}`);
+  }
+}
+
+async function downloadQuestData(list: Array<number>) {
+  const queue = new List(list);
+  let id: number | undefined;
+  while ((id = queue.shift())) {
+    const filePath = PATHS.quest(id);
+    if (!isForced && (await isFile(filePath))) {
+      console.log(`[SKIP] Already have quest data for id ${id}`);
+      continue;
+    }
+
+    console.log(`[LOG] Fetching quest data for id ${id}`);
+    const data = await fetchQuestData(id);
+    await writeFile(filePath, data);
+    console.log(`[DONE] Completed download of quest data for id ${id}`);
   }
 }
 
@@ -117,13 +159,21 @@ async function main() {
 
   await setupDirs();
 
-  console.log("Downloading Monster List");
-  const list = await fetchMonsterList();
-  console.log(`Found ${list.length} Monster IDs`);
+  console.log("Downloading Lists");
+  const [monstersList, questsList] = await Promise.all([
+    fetchMonsterList(),
+    fetchQuestList()
+  ]);
+  console.log(`Found ${monstersList.length} Monster IDs`);
+  console.log(`Found ${questsList.length} Quest IDs`);
 
-  await writeFile(PATHS.monsterList, JSON.stringify(list));
-  await downloadMonsterData(list);
+  await Promise.all([
+    writeFile(PATHS.monsterList, JSON.stringify(monstersList)),
+    writeFile(PATHS.questList, JSON.stringify(questsList))
+  ]);
+  await downloadMonsterData(monstersList);
   await downloadMonsterSkillsData();
+  await downloadQuestData(questsList);
 }
 
 main()

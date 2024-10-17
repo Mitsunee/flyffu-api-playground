@@ -1,28 +1,3 @@
-type GameLanguage =
-  | "en"
-  | "ar"
-  | "br"
-  | "cns"
-  | "de"
-  | "fi"
-  | "fil"
-  | "fr"
-  | "id"
-  | "it"
-  | "jp"
-  | "kr"
-  | "nl"
-  | "pl"
-  | "ru"
-  | "sp"
-  | "sw"
-  | "th"
-  | "tw"
-  | "vi";
-
-type EntityName = Record<"en" | "kr", string> &
-  Partial<Record<GameLanguage, string>>;
-
 type MonsterRank =
   | "small"
   | "normal"
@@ -60,7 +35,7 @@ interface MonsterAttack {
  */
 interface MonsterData {
   id: number;
-  name: EntityName;
+  name: LocalizedName;
   event: boolean;
   level: number;
   rank: MonsterRank;

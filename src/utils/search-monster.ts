@@ -7,7 +7,7 @@ export async function searchMonsterByName(list: number[], query: string) {
     const data = await getMonsterData(id);
     if (data.name.en.toLowerCase().includes(queryNormalized)) {
       matches.push({ data, lang: "en" });
-    } else if (data.name.de?.toLowerCase().includes(queryNormalized)) {
+    } else if (data.name.de.toLowerCase().includes(queryNormalized)) {
       matches.push({ data, lang: "de" });
     }
   }
