@@ -20,4 +20,6 @@ type GameLanguage =
   | "tw"
   | "vi";
 
-type LocalizedName = Record<GameLanguage, string>;
+type LocalizedName = { en: string } & Partial<
+  Record<Exclude<GameLanguage, "en">, string>
+>;
