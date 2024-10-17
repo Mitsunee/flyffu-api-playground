@@ -41,6 +41,14 @@ pnpm exp-calc
 
 This script can be configured with a level range and filter function to determine the mobs for exp comparisons (similar to Exp Compare)
 
+### Tower Quests
+
+```
+pnpm tsx src/tower-quests.ts
+```
+
+Simple script that finds all Forsaken Tower quests, organizes them by floor and outputs a list with how much exp is earned at each possible level for those floors, as well as how much penya is earned and how many quests are available.
+
 ## Cache
 
 Instead of constantly redownloading the same data the `pnpm prepare-cache` script downloads all needed data at once and stores it in `./data`:
@@ -48,8 +56,11 @@ Instead of constantly redownloading the same data the `pnpm prepare-cache` scrip
 ```
 data
 ├── monsters.json (list of all monster IDs)
-└── monster
-   ├── {id}.json (individual monster data)
-   └── skill
-      └── {id}.json (individual skill data)
+├── quests.json (list of all quest IDs)
+├── monster
+|  ├── {id}.json (individual monster data)
+|  └── skill
+|     └── {id}.json (individual skill data)
+└── quests
+   └── {id}.json (individual quest data)
 ```
