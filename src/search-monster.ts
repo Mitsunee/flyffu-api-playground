@@ -19,6 +19,8 @@ options:
   --hide-lv     Disables showing monster levels
   --show-rank   Enables showing monster ranks
   --hide-rank   Disables showing monster ranks
+  --show-warn   Enables showing monster warnings
+  --hide-warn   Disables showing monster warnings
 
 Options can be entered at any point and in any order.
 All arguments starting with a - (dash) are parsed as an argument, all other arguments are parsed as search queries.
@@ -58,6 +60,12 @@ async function main() {
       case "--hide-rank":
         opts.showRank = false;
         continue;
+      case "--show-warn":
+        opts.showWarnings = true;
+        continue;
+      case "--hide-warn":
+        opts.showWarnings = false;
+        continue;
     }
 
     // handle unknown arg
@@ -76,7 +84,7 @@ async function main() {
     const results = await searchMonsterByName(list, query);
     for (const result of results) {
       console.log(
-        `- ${describeMonster(result.data, { ...opts, lang: result.lang })}`
+        `- ${await describeMonster(result.data, { ...opts, lang: result.lang })}`
       );
     }
     console.log(""); // force newline

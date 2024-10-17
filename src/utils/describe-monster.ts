@@ -1,3 +1,5 @@
+import { getMonsterWarnings } from "./get-monster-warnings";
+
 type LangOpt = "always" | "never" | "not en only";
 
 export interface DescribeMonsterOpts {
@@ -6,17 +8,22 @@ export interface DescribeMonsterOpts {
   showLevel?: boolean;
   lang?: GameLanguage;
   showLang?: LangOpt;
+  showWarnings?: boolean;
 }
 
 /**
  * Describes a monster in text
  * @param data MonsterData Object
  */
-export function describeMonster(data: MonsterData, opts?: DescribeMonsterOpts) {
+export async function describeMonster(
+  data: MonsterData,
+  opts?: DescribeMonsterOpts
+) {
   const showLevel = opts?.showLevel ?? true;
   const showRank = opts?.showRank ?? false;
   const lang: GameLanguage = opts?.lang ?? "en";
   const showLang = opts?.showLang ?? "not en only";
+  const showWarnings = opts?.showWarnings ?? false;
   let description = "";
 
   // Handle showing ID
@@ -44,6 +51,14 @@ export function describeMonster(data: MonsterData, opts?: DescribeMonsterOpts) {
   // Handle displaying language
   if (showLang === "always" || (lang != "en" && showLang == "not en only")) {
     description += ` (${lang})`;
+  }
+
+  // Handle warnings
+  if (showWarnings) {
+    const warnings = await getMonsterWarnings(data);
+    if (warnings.length > 0) {
+      description += ` (WARN: ${warnings.join(", ")})`;
+    }
   }
 
   return description;
