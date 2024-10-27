@@ -19,6 +19,8 @@ options:
   --hide-lv     Disables showing monster levels
   --show-rank   Enables showing monster ranks
   --hide-rank   Disables showing monster ranks
+  --show-elem   Enables showing monster element
+  --hide-elem   Disables showing monster element
   --show-warn   Enables showing monster warnings
   --hide-warn   Disables showing monster warnings
 
@@ -59,6 +61,12 @@ async function main() {
         continue;
       case "--hide-rank":
         opts.showRank = false;
+        continue;
+      case "--show-elem":
+        opts.showElement = true;
+        continue;
+      case "--hide-elem":
+        opts.showElement = false;
         continue;
       case "--show-warn":
         opts.showWarnings = true;

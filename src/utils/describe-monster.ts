@@ -1,3 +1,4 @@
+import { capitalize } from "./capitalize";
 import { getMonsterWarnings } from "./get-monster-warnings";
 
 type LangOpt = "always" | "never" | "not en only";
@@ -9,6 +10,7 @@ export interface DescribeMonsterOpts {
   lang?: GameLanguage;
   showLang?: LangOpt;
   showWarnings?: boolean;
+  showElement?: boolean;
 }
 
 /**
@@ -21,6 +23,7 @@ export async function describeMonster(
 ) {
   const showLevel = opts?.showLevel ?? true;
   const showRank = opts?.showRank ?? false;
+  const showElement = opts?.showElement ?? false;
   const lang: GameLanguage = opts?.lang ?? "en";
   const showLang = opts?.showLang ?? "not en only";
   const showWarnings = opts?.showWarnings ?? false;
@@ -29,20 +32,13 @@ export async function describeMonster(
   // Handle showing ID
   if (opts?.showId ?? false) description += `[#${data.id}] `;
 
-  // Handle showing level (potentially with rank)
-  if (showLevel) {
-    description += `[Lv. ${data.level}`;
-    if (showRank) {
-      const [first, ...rest] = data.rank;
-      description += ` ${first.toUpperCase()}${rest.join("")}`;
-    }
-    description += "] ";
-  }
-
-  // Handle showing rank without level
-  if (showRank && !showLevel) {
-    const [first, ...rest] = data.rank;
-    description += `[${first.toUpperCase()}${rest.join("")}] `;
+  // Handle showing level, rank and/or element
+  if (showLevel || showRank || showElement) {
+    const details = new Array<string>();
+    if (showLevel) details.push(`Lv. ${data.level}`);
+    if (showRank) details.push(capitalize(data.rank));
+    if (showElement) details.push(capitalize(data.element));
+    description += `[${details.join(" ")}] `;
   }
 
   // Handle including name
