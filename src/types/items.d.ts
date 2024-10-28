@@ -5,6 +5,7 @@ interface ItemData {
   name: LocalizedName;
   icon: string;
   item: string;
+  category: string;
   subcategory?: string;
   rarity: ItemRarity;
   element: EntityElement;

@@ -4,5 +4,6 @@ interface NPCData {
   menus: Array<string>;
   image: string;
   place?: string;
+  locations: Array<WorldLocation>;
   // shop
 }

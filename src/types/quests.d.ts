@@ -15,5 +15,6 @@ interface QuestData {
   endReceiveGold?: number;
   endReceiveExperience?: Array<number>;
   endReceiveInventorySpaces?: number;
-  // TODO: endReceiveItems
+  endNeededItems?: Array<{ item: number; count: number }>;
+  endReceiveItems?: Array<{ item: number; count: number; soulLinked: boolean }>;
 }
