@@ -21,6 +21,12 @@ interface MonsterAttack {
   triggerSkill?: number;
 }
 
+interface MonsterDrop {
+  item: number;
+  probabilityRange: string;
+  common: boolean;
+}
+
 /**
  * Monster Data from `/monster/{id}` endpoint
  * Some (unused) props may be missing
@@ -44,6 +50,7 @@ interface MonsterData {
   recoveryThresholdHP?: number;
   experienceTable: Array<number>;
   attacks: Array<MonsterAttack>;
+  drops: Array<MonsterDrop>;
 }
 
 interface MonsterSkillAbility {

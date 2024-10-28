@@ -2,7 +2,7 @@
 
 import { getMonsterData } from "./utils/get-monster-data";
 import { getMonsterList } from "./utils/get-monster-list";
-import { searchMonsterByName } from "./utils/search-monster";
+import { searchMonsterByName } from "./utils/search-monster-by-name";
 import { getMonsterExp } from "./utils/get-monster-exp";
 import { getMonsterWarnings } from "./utils/get-monster-warnings";
 

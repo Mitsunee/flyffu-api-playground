@@ -1,7 +1,7 @@
 import { getMonsterList } from "~/utils/get-monster-list";
 import type { DescribeMonsterOpts } from "~/utils/describe-monster";
 import { describeMonster } from "~/utils/describe-monster";
-import { searchMonsterByName } from "./utils/search-monster";
+import { searchMonsterByName } from "./utils/search-monster-by-name";
 
 const [, , ...args] = process.argv;
 
