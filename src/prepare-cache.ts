@@ -152,6 +152,57 @@ async function downloadMonsterSkillsData() {
   }
 }
 
+async function prepareFilteredMonsterLists(fullList: number[]) {
+  const lists: Record<keyof (typeof PATHS)["monsterLists"], Array<number>> = {
+    /**
+     * Contains all non-flying non-event overworld monsters (excl. Kebaras,
+     * Catcher and Berry Carriers)
+     */
+    overworld: new Array<number>(),
+    /**
+     * Same list as `overworld` but excluding Giants and Violets
+     */
+    overworldNonGiant: new Array<number>(),
+    /**
+     * Same list as `overworld` but only includes Giants and Violets
+     */
+    overworldGiant: new Array<number>()
+    // TODO: figure out how to get a list of monsters in old non-instanced dungeons (Mars Dungeon etc)
+  };
+  type ListKey = keyof typeof lists;
+  type ListEntry = [ListKey, Array<number>];
+
+  for (const id of fullList) {
+    const data = monsterData.get(id);
+    if (!data) continue;
+    if (data.area != "normal" || data.flying || data.event) continue;
+    const nameNormalized = data.name.en.toLowerCase();
+    if (nameNormalized.startsWith("criminal")) continue; // no kebaras
+    if (nameNormalized.includes("berry carrier")) continue; // no berry carriers
+    if (nameNormalized.endsWith("catcher")) continue; // no ore catchers
+    lists.overworld.push(id);
+    if (
+      data.rank == "small" ||
+      data.rank == "normal" ||
+      data.rank == "captain"
+    ) {
+      lists.overworldNonGiant.push(id);
+    } else {
+      lists.overworldGiant.push(id);
+    }
+  }
+
+  console.log(
+    `[DONE] Prepared filtered lists: ${Object.keys(lists).join(", ")}`
+  );
+
+  return Promise.all(
+    (Object.entries(lists) as Array<ListEntry>).map(([key, list]) =>
+      writeFile(PATHS.monsterLists[key], JSON.stringify(list))
+    )
+  );
+}
+
 async function main() {
   if (isForced) {
     console.log("Forceing redownloading of all data");
@@ -174,6 +225,7 @@ async function main() {
   await downloadMonsterData(monstersList);
   await downloadMonsterSkillsData();
   await downloadQuestData(questsList);
+  await prepareFilteredMonsterLists(monstersList);
 }
 
 main()

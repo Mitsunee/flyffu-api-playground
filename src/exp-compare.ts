@@ -1,6 +1,5 @@
 // yes I know I already started a calculator, but that one's too generic for my usecase right now lol
 
-import { getMonsterData } from "./utils/get-monster-data";
 import { getMonsterList } from "./utils/get-monster-list";
 import { searchMonsterByName } from "./utils/search-monster-by-name";
 import { getMonsterExp } from "./utils/get-monster-exp";
@@ -13,30 +12,6 @@ interface CalcResult {
 }
 
 const [, , ...args] = process.argv;
-
-async function getMonsterListFiltered() {
-  const list = await getMonsterList();
-  const filtered: typeof list = [];
-
-  for (const id of list) {
-    const data = await getMonsterData(id);
-    if (data.area != "normal") continue; // only overworld monsters
-    if (data.flying || data.event) continue; // no flying or event monsters
-    // Monster must be small, normal or captain rank
-    if (
-      !(data.rank == "small" || data.rank == "normal" || data.rank == "captain")
-    ) {
-      continue;
-    }
-    const nameNormalized = data.name.en.toLowerCase();
-    if (nameNormalized.startsWith("criminal")) continue; // no kebaras
-    if (nameNormalized.includes("berry carrier")) continue; // no berry carriers
-    if (nameNormalized.endsWith("catcher")) continue; // no ore catchers
-    filtered.push(id);
-  }
-
-  return filtered;
-}
 
 function parseLevelRangeArg(input: string) {
   if (!/^(\d\d?|1[0-5]\d|160)-(\d\d?|1[0-5]\d|160)$/.test(input)) {
@@ -81,7 +56,7 @@ async function main() {
     process.exit(0);
   }
   const [start, end] = parseLevelRangeArg(rangeArg);
-  const list = await getMonsterListFiltered();
+  const list = await getMonsterList("overworldNonGiant");
 
   if (queries.length < 1) {
     throw new Error("Must give at least one search query");

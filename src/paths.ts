@@ -16,6 +16,11 @@ export const PATHS = {
   monsters: `${DATA_DIR}/monster`,
   monster: (id: number) => `${DATA_DIR}/monster/${id}.json`,
   monsterList: `${DATA_DIR}/monsters.json`,
+  monsterLists: {
+    overworld: `${DATA_DIR}/monsters/overworld.json`,
+    overworldNonGiant: `${DATA_DIR}/monsters/overworld-non-giant.json`,
+    overworldGiant: `${DATA_DIR}/monsters/overworld-giant.json`
+  } as const,
   monsterSkills: `${DATA_DIR}/monster/skill`,
   monsterSkill: (id: number) => `${DATA_DIR}/monster/skill/${id}.json`,
   quests: `${DATA_DIR}/quest`,

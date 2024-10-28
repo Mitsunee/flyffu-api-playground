@@ -51,16 +51,32 @@ Simple script that finds all Forsaken Tower quests, organizes them by floor and 
 
 ## Cache
 
-Instead of constantly redownloading the same data the `pnpm prepare-cache` script downloads all needed data at once and stores it in `./data`:
+Instead of constantly redownloading the same data the `pnpm prepare-cache` script downloads all needed data for monsters and quests at once and stores it in `./data`. Other data such as NPCs and Items are downloaded once on demand and also stored:
 
 ```
 data
 ├── monsters.json (list of all monster IDs)
 ├── quests.json (list of all quest IDs)
+├── item
+|  └── {id}.json (individual item data)
 ├── monster
 |  ├── {id}.json (individual monster data)
 |  └── skill
 |     └── {id}.json (individual skill data)
+├── monsters
+|  └── {slug}.json (pre-filtered monster lists)
+├── npc
+|  └── {id}.json (individual NPC data)
 └── quests
    └── {id}.json (individual quest data)
 ```
+
+## Monster Lists
+
+Due to the variety of monster types that may or may not be wanted in specific queries pre-filtered monster lists are created by `prepare-cache` (see above) and available with the `getMonsterList` util:
+
+|          Name           | Description                                          |
+| :---------------------: | :--------------------------------------------------- |
+|      `"overworld"`      | All non-flying non-event overworld monsters          |
+| `"overworld-non-giant"` | Same as `"overworld"` but without Giants and Violets |
+|   `"overworld-giant"`   | Inverse of `"overworld-non-giant"`                   |
