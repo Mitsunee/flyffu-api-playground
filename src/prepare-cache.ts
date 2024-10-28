@@ -42,6 +42,17 @@ async function fetchQuestList(): Promise<Array<number>> {
   return res.json();
 }
 
+async function fetchMainWorld() {
+  const res = await fetch(API.world(6063));
+  if (!res.ok) {
+    throw new Error(`Failed to fetch main world data`);
+  }
+
+  const data = await res.text();
+
+  return Promise.all([sleep(sleepDuration), writeFile(PATHS.mainWorld, data)]);
+}
+
 async function fetchMonsterData(id: number) {
   const res = await fetch(API.monster(id));
   if (!res.ok) {
@@ -210,10 +221,11 @@ async function main() {
 
   await setupDirs();
 
-  console.log("Downloading Lists");
+  console.log("Downloading Lists and main world");
   const [monstersList, questsList] = await Promise.all([
     fetchMonsterList(),
-    fetchQuestList()
+    fetchQuestList(),
+    fetchMainWorld()
   ]);
   console.log(`Found ${monstersList.length} Monster IDs`);
   console.log(`Found ${questsList.length} Quest IDs`);

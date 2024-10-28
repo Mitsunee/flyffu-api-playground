@@ -57,6 +57,7 @@ Instead of constantly redownloading the same data the `pnpm prepare-cache` scrip
 data
 ├── monsters.json (list of all monster IDs)
 ├── quests.json (list of all quest IDs)
+├── world.json (data of main overworld)
 ├── item
 |  └── {id}.json (individual item data)
 ├── monster
