@@ -13,14 +13,6 @@ type MonsterRank =
 
 type MonsterArea = "normal" | "dungeon" | "instance";
 
-type EntityElement =
-  | "fire"
-  | "water"
-  | "electricity"
-  | "wind"
-  | "earth"
-  | "none";
-
 interface MonsterAttack {
   minAttack: number;
   maxAttack: number;
