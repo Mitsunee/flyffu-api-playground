@@ -6,7 +6,8 @@ export const API = {
   skill: (id: number) => `${API_URL}/skill/${id}`,
   questsList: `${API_URL}/quest`,
   quest: (id: number) => `${API_URL}/quest/${id}`,
-  item: (id: number) => `${API_URL}/item/${id}`
+  item: (id: number) => `${API_URL}/item/${id}`,
+  npc: (id: number) => `${API_URL}/npc/${id}`
 } as const;
 
 export const DATA_DIR = "data";
@@ -20,5 +21,6 @@ export const PATHS = {
   quests: `${DATA_DIR}/quest`,
   quest: (id: number) => `${DATA_DIR}/quest/${id}.json`,
   questList: `${DATA_DIR}/quests.json`,
-  item: (id: number) => `${DATA_DIR}/item/${id}.json`
+  item: (id: number) => `${DATA_DIR}/item/${id}.json`,
+  npc: (id: number) => `${DATA_DIR}/npc/${id}.json`
 } as const;
