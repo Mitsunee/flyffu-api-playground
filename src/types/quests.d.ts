@@ -16,5 +16,6 @@ interface QuestData {
   endReceiveExperience?: Array<number>;
   endReceiveInventorySpaces?: number;
   endNeededItems?: Array<{ item: number; count: number }>;
+  endKillMonsters?: Array<{ monster: Array<number>; count: number }>;
   endReceiveItems?: Array<{ item: number; count: number; soulLinked: boolean }>;
 }
