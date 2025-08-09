@@ -79,6 +79,14 @@ const getOfficeLocation = (() => {
 })();
 
 async function main() {
+  // TEMP
+  // FIXME: missing help
+  if (process.argv.includes("--help") || process.argv.includes("-h")) {
+    throw new Error("HELP UNIMPLEMENTED");
+  }
+
+  const argShort =
+    process.argv.includes("--short") || process.argv.includes("-s");
   const [monsterList, questList] = await Promise.all([
     getMonsterList("overworldNonGiant"),
     getQuestList()
@@ -169,18 +177,19 @@ async function main() {
       const targets = (officeQuest.droppedBy || officeQuest.targets).sort(
         (a, b) => a.level - b.level
       );
-      const condition = `${
-        officeQuest.item
-          ? `Collect ${officeQuest.amount}x ${officeQuest.item.name.en}, dropped by:`
-          : `Kill ${officeQuest.amount} of:`
-      }\n\n${(
-        await Promise.all(
-          targets.map(
-            async target =>
-              ` - ${await describeMonster(target, { showRank: true, showLevel: true })}`
+      let condition = officeQuest.item
+        ? `Collect ${officeQuest.amount}x ${officeQuest.item.name.en}${argShort ? "" : ", dropped by:"}`
+        : `Kill ${officeQuest.amount} of:`;
+      if (!argShort || !officeQuest.item) {
+        condition += `\n\n${(
+          await Promise.all(
+            targets.map(
+              async target =>
+                ` - ${await describeMonster(target, { showRank: true, showLevel: true })}`
+            )
           )
-        )
-      ).join("\n")}`;
+        ).join("\n")}`;
+      }
 
       table.push({
         lv: officeQuest.quest.minLevel,
